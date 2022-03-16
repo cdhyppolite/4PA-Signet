@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.1e2a0493.css",
-    "main.js": "/static/js/main.2682c2c8.js",
-    "index.html": "/index.html",
-    "main.1e2a0493.css.map": "/static/css/main.1e2a0493.css.map",
-    "main.2682c2c8.js.map": "/static/js/main.2682c2c8.js.map"
+    "main.css": "/signet-4PA/static/css/main.1e2a0493.css",
+    "main.js": "/signet-4PA/static/js/main.2682c2c8.js",
+    "index.html": "/signet-4PA/index.html",
+    "main.1e2a0493.css.map": "/signet-4PA/static/css/main.1e2a0493.css.map",
+    "main.2682c2c8.js.map": "/signet-4PA/static/js/main.2682c2c8.js.map"
   },
   "entrypoints": [
     "static/css/main.1e2a0493.css",
