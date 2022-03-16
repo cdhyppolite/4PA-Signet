@@ -1,3 +1,3 @@
-# Solution modèle des exercices 1 & 2 comnbinés. 
+# Exercise 1 & 2 Interfaces web reactives et animées
 
-Application Web Signets : structure des composants et formatage.
+Court texte présentant votre site Web/application.
