@@ -1,6 +1,6 @@
 {
-    "xhomepage": "https://cdhyppolite.github.io/ex1-signets",
-    "name": "ex1-signets",
+    "xhomepage": "https://cdhyppolite.github.io/signet-4PA",
+    "name": "signets",
     "version": "0.1.0",
     "private": true,
     "dependencies": {

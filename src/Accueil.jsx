@@ -1,13 +1,20 @@
 import './Accueil.scss';
 import logoGoogle from './images/google-logo.png';
+import {authFirebase, authGoogle } from './code/init';
+import { signInWithPopup } from 'firebase/auth';
 
-export default function Accueil() {
-  
+export default function Accueil({setUtilisateur}) {
+  function connexion() {
+    signInWithPopup(authFirebase, authGoogle).then(
+      uc => setUtilisateur(uc.user)
+    )
+  }
+
   return (
     <div className="Accueil">
       <h3 className="logo">Signet</h3>
       <div className="conteneur-boutons-connexion">
-        <span className="btn-google" onClick={() => alert('À compléter !')}>
+        <span className="btn-google" onClick={connexion}>
           <img className="btn-image" src={logoGoogle} alt="Logo Google"/>
           <span className="btn-texte">Continuer avec Google</span>
         </span>

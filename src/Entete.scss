@@ -40,6 +40,9 @@
     #cc-option-user {
         display: none;
     }
+    .btnDeco svg {
+        color: crimson;
+    }
     #cc-option-user:checked~.option-user {
         height: 4*30px;
     }

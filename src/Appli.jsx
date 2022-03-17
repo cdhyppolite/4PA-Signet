@@ -4,21 +4,27 @@ import PiedPage from './PiedPage';
 import ListeSignets from './ListeSignets';
 import Accueil from './Accueil';
 import { useState, useEffect } from 'react';
-
-// import ListeProduits from './ListeProduits';
-// import {useState} from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { authFirebase } from './code/init';
 
 export default function Appli() {
   // État utilisateurs
-  const [utilisateur, setutilisateur] = useState(null);
+  const [utilisateur, setUtilisateur] = useState(null);
+
+  // État de connexion
+  useEffect(
+    () => onAuthStateChanged(authFirebase, user => setUtilisateur),
+    []
+  )
+
   return (
     utilisateur ?
     <div className="Appli">
-      <Entete/>
+      <Entete utilisateur={utilisateur} setUtilisateur={setUtilisateur}/>
       <ListeSignets/>
       <PiedPage />
       </div>
       :
-      <Accueil/>
+      <Accueil setUtilisateur ={setUtilisateur}/>
   );
 }

@@ -4,14 +4,17 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LanguageIcon from '@mui/icons-material/Language';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Avatar from '@mui/material/Avatar';
+import { authFirebase } from './code/init';
 // https://mui.com/components/material-icons/
 
-export default function Entete(props) {
-    let nom = "Carl-David Hyppolite";
-    // let nom = prompt("Entrez votre nom:", "Carl-David Hyppolite");
-    let logo ="1";
-    if (nom != "Carl-David Hyppolite") logo = "2";
-    let imgTaille =30;
+export default function Entete({utilisateur, setUtilisateur}) {
+
+    function deconnexion() {
+        authFirebase.signOut().then(
+            () => setUtilisateur(null)
+        );
+      }
+
     return (
         <header className="Entete">
             <h1>Signets</h1>
@@ -21,12 +24,12 @@ export default function Entete(props) {
                     <div><SettingsIcon/></div>
                     <div><LanguageIcon/></div>
                     <div><Brightness4Icon/></div>
-                    <div><LogoutIcon/></div>
+                    <div className="btnDeco" onClick={deconnexion}><LogoutIcon/></div>
                 </div>
-                <a href="#">{nom}</a>
+                <a href="#">{utilisateur.displayName}</a>
                 <div>
                     <label htmlFor="cc-option-user">
-                        <Avatar className="avatar" alt="Carl-David Hyppolite" src={"img/logos/logo"+logo+".webp"} width={imgTaille} height={imgTaille} />
+                        <Avatar className="avatar" alt={utilisateur.displayName} src={utilisateur.photoURL} />
                     </label>
                 </div>
             </nav>
