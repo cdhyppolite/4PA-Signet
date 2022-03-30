@@ -2,7 +2,7 @@ import './Dossier.scss';
 import IconButton from '@mui/material/IconButton';
 import SortIcon from '@mui/icons-material/Sort';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-export default function Dossier({id, titre, couleur, dateModif}) {
+export default function Dossier({id, titre, couleur, dateModif, couverture}) {
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir : 
     // https://reactjs.org/docs/dom-elements.html#style

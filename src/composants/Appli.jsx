@@ -8,8 +8,11 @@ import { useState, useEffect } from 'react';
 import { observerEtatConnexion } from '../code/utilisateur-modele';
 
 export default function Appli() {
-  // État 'utilisateur'
+  // État utilisateur
   const [utilisateur, setUtilisateur] = useState(null);
+
+  // État dossier
+  const [dossiers, setDossiers] = useState(null);
 
   // Surveiller l'état de la connexion Firebase Auth
   useEffect(() => observerEtatConnexion(setUtilisateur),[]);
@@ -19,7 +22,7 @@ export default function Appli() {
         <div className="Appli">
             <Entete utilisateur={utilisateur} />
             <section className="contenu-principal">
-              <ListeDossiers />
+              <ListeDossiers utilisateur={utilisateur} dossiers={dossiers} setDossiers={setDossiers}/>
               <Fab size="large" className="ajoutRessource" color="primary" aria-label="Ajouter dossier">
                 <AddIcon />
               </Fab>
