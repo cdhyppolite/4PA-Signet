@@ -11,11 +11,11 @@ export default function Dossier({id, titre, couleur, dateModif, couverture}) {
         <IconButton className="deplacer" aria-label="déplacer" disableRipple={true}>
           <SortIcon />
         </IconButton>
-        <img src={`images-dossiers/${id}.webp`} alt={titre}/>
+        <img src={couverture} alt={titre}/>
       </div>
       <div className="info">
         <h2>{titre}</h2>
-        <p>Modifié : {dateModif}</p>
+        <p>Modifié : {dateModif.seconds}</p>
       </div>
       <IconButton className="modifier" aria-label="modifier" size="small">
         <MoreVertIcon />
