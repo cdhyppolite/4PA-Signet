@@ -1,5 +1,5 @@
 import { bdFirestore } from "./init";
-import { getDocs, collection, addDoc, Timestamp, getDoc } from "firebase/firestore";
+import { getDocs, collection, addDoc, Timestamp, getDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 
 /**
  * Obtenir tous les dossiers d'un utilisateur
@@ -7,7 +7,8 @@ import { getDocs, collection, addDoc, Timestamp, getDoc } from "firebase/firesto
  * @returns {Promise<any[]>} Promesse avec le tableau des dossiers lorsque complétée
  */
 export async function lireTout(idUtilisateur) {
-    return getDocs(collection(bdFirestore, 'signets', idUtilisateur, 'dossiers')).then(
+    return getDocs(query(collection(bdFirestore, 'signets', idUtilisateur, 'dossiers'),
+    orderBy('dateModif', 'desc'))).then(
         res => res.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     );
 }
@@ -32,4 +33,14 @@ export async function creer(idUtilisateur, dossier) {
     // ajouté grâce à la fonction getDoc (au singulier !) : cette fonction retourne
     // une promesse, d'où l'utilisation de 'await'...
     return await getDoc(refDoc);
+}
+/**
+ * Supprimer un dossier pour l'utilisateur connecté
+ * @param {string} uid : id Fiebase Auth de l'utilisateur connecté
+ * @param {string} idDossier : id un document à supprimer
+ * @returns {Promise<void>} : promesse contenant rien
+ */
+ export async function supprimer(uid, idDossier) {
+    let refDoc = doc(bdFirestore, 'signets', uid, 'dossiers', idDossier);
+    return await deleteDoc(refDoc);
 }
