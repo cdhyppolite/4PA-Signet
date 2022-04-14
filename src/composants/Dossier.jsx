@@ -7,24 +7,30 @@ import MenuItem from '@mui/material/MenuItem';
 import {convertirDate} from '../code/helper';
 import couvertureDefault from '../images/couverture-default.webp'
 import { useState } from 'react';
+import ModificationDossier from './ModificationDossier';
 export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier}) {
 
+  // Menu contextuel
   const [eltAncrage, setEltAncrage] = useState(null);
-  const ouvert = Boolean(eltAncrage);
+  const ouvertMenu = Boolean(eltAncrage);
+
+  // Modification formulaire
+  const [ouvertFrm, setOuvertFrm] = useState(false);
 
   function gererMenu(event) {
     setEltAncrage(event.currentTarget);
   };
-  function gererFermer() {
+  function gererFermerMenu() {
     setEltAncrage(null);
   };
 
   function gererFormulaireModifier() {
-    gererFermer(); // Fermer le formulaire
+    gererFermerMenu(); // Fermer le formulaire
+    setOuvertFrm(true);
 
   }
   function gererSupprimer() {
-    gererFermer(); // Fermer le formulaire
+    gererFermerMenu(); // Fermer le formulaire
     supprimerDossier(id) // Supprimer le dossier
   }
   
@@ -53,8 +59,8 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
       <Menu
         id="menu-contextuel-dossier"
         anchorEl={eltAncrage}
-        open={ouvert}
-        onClose={gererFermer}
+        open={ouvertMenu}
+        onClose={gererFermerMenu}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -67,6 +73,7 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
         <MenuItem onClick={gererFormulaireModifier}>Modifier</MenuItem>
         <MenuItem onClick={gererSupprimer}>Supprimer</MenuItem>
       </Menu>
+      <ModificationDossier id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} ouvert={ouvertFrm} setOuvert={setOuvertFrm}/>
     </article>
   );
 }
