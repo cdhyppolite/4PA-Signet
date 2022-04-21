@@ -4,45 +4,52 @@ import SortIcon from '@mui/icons-material/Sort';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {convertirDate} from '../code/helper';
-import couvertureDefault from '../images/couverture-default.webp'
+import couvertureDefaut from '../images/couverture-defaut.webp';
+import { convertirDate } from '../code/helper';
 import { useState } from 'react';
 import ModificationDossier from './ModificationDossier';
-export default function Dossier({ modifierDossier,dossiers, setDossiers, uid,id, titre, couleur, dateModif, couverture, supprimerDossier}) {
 
-  // Menu contextuel
+export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier, modifierDossier}) {
+  // État du menu contextuel
   const [eltAncrage, setEltAncrage] = useState(null);
   const ouvertMenu = Boolean(eltAncrage);
 
-  // Modification formulaire
+  // État du formulaire de modification
   const [ouvertFrm, setOuvertFrm] = useState(false);
 
   function gererMenu(event) {
     setEltAncrage(event.currentTarget);
   };
+
   function gererFermerMenu() {
+    
     setEltAncrage(null);
   };
 
   function gererFormulaireModifier() {
-    gererFermerMenu(); // Fermer le formulaire
+    // Ouvrir le formulaire de modification du dossier (transférer l'info sir le
+    // dossier dans le formulaire) ...
     setOuvertFrm(true);
-
+    // ... puis fermer le menu.
+    gererFermerMenu();
   }
+  
   function gererSupprimer() {
-    gererFermerMenu(); // Fermer le formulaire
-    supprimerDossier(id) // Supprimer le dossier
+    // Appeler la fonction de ListeDossiers qui gère la suppression dans Firestore
+    supprimerDossier(id);
+
+    // ... puis fermer le menu.
+    gererFermerMenu();
   }
 
-  function gererModifier() {
-    modifierDossier(id,titre,couverture,couleur)
-  }
-  
-  // Tester URl
+  // Tester si l'URL dans la variable couverture est valide
   let urlCouverture;
-  try { urlCouverture = new URL(couverture); }
-  catch(e) { couverture = couvertureDefault; }
-  
+  try {
+    urlCouverture = new URL(couverture);
+  }
+  catch(e) {
+    couverture = couvertureDefaut;
+  }
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir : 
     // https://reactjs.org/docs/dom-elements.html#style
@@ -51,11 +58,11 @@ export default function Dossier({ modifierDossier,dossiers, setDossiers, uid,id,
         <IconButton className="deplacer" aria-label="déplacer" disableRipple={true}>
           <SortIcon />
         </IconButton>
-        <div className='divImg'><img src={couverture || couvertureDefault} alt={titre}/></div>
+        <img src={couverture || couvertureDefaut} alt={titre}/>
       </div>
       <div className="info">
-        <h2><b>{titre}</b></h2>
-        <p><b>Modifié</b> : {convertirDate(dateModif.seconds)}</p>
+        <h2>{titre}</h2>
+        <p>Modifié : {convertirDate(dateModif.seconds)}</p>
       </div>
       <IconButton onClick={gererMenu} className="modifier" aria-label="modifier" size="small">
         <MoreVertIcon />
@@ -77,7 +84,7 @@ export default function Dossier({ modifierDossier,dossiers, setDossiers, uid,id,
         <MenuItem onClick={gererFormulaireModifier}>Modifier</MenuItem>
         <MenuItem onClick={gererSupprimer}>Supprimer</MenuItem>
       </Menu>
-      <ModificationDossier gererModifierDossier={gererModifier} id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} ouvert={ouvertFrm} setOuvert={setOuvertFrm}/>
+      <ModificationDossier modifierDossier={modifierDossier} ouvert={ouvertFrm} setOuvert={setOuvertFrm} id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} />
     </article>
   );
 }
