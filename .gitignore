@@ -3,6 +3,13 @@
 # Ignorer le fichier de config Firebase
 /src/code/config.js
 
+# Firebase
+/.firebase
+.firebaserc
+firebase.json
+firestore.indexes.json
+firestore.rules
+
 # Ignorer .eslintcache
 .eslintcache
 

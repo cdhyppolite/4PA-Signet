@@ -8,7 +8,7 @@ import {convertirDate} from '../code/helper';
 import couvertureDefault from '../images/couverture-default.webp'
 import { useState } from 'react';
 import ModificationDossier from './ModificationDossier';
-export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier}) {
+export default function Dossier({ modifierDossier,dossiers, setDossiers, uid,id, titre, couleur, dateModif, couverture, supprimerDossier}) {
 
   // Menu contextuel
   const [eltAncrage, setEltAncrage] = useState(null);
@@ -33,6 +33,10 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
     gererFermerMenu(); // Fermer le formulaire
     supprimerDossier(id) // Supprimer le dossier
   }
+
+  function gererModifier() {
+    modifierDossier(id,titre,couverture,couleur)
+  }
   
   // Tester URl
   let urlCouverture;
@@ -47,7 +51,7 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
         <IconButton className="deplacer" aria-label="déplacer" disableRipple={true}>
           <SortIcon />
         </IconButton>
-        <img src={couverture || couvertureDefault} alt={titre}/>
+        <div className='divImg'><img src={couverture || couvertureDefault} alt={titre}/></div>
       </div>
       <div className="info">
         <h2><b>{titre}</b></h2>
@@ -73,7 +77,7 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
         <MenuItem onClick={gererFormulaireModifier}>Modifier</MenuItem>
         <MenuItem onClick={gererSupprimer}>Supprimer</MenuItem>
       </Menu>
-      <ModificationDossier id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} ouvert={ouvertFrm} setOuvert={setOuvertFrm}/>
+      <ModificationDossier gererModifierDossier={gererModifier} id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} ouvert={ouvertFrm} setOuvert={setOuvertFrm}/>
     </article>
   );
 }

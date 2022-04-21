@@ -6,12 +6,20 @@
     color: #fff;
     cursor: pointer;
     overflow: hidden;
+    .divImg {
+        overflow: hidden;
+    }
     .couverture {
         height: 200px;
         img {
             width: 300px;
             height: 200px;
             object-fit: cover;
+            transition: 1s ease;
+            &:hover {
+                opacity: 0.7;
+                transform: scale(1.2);
+            }
         }
     }
     .deplacer {

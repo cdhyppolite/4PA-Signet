@@ -1,5 +1,5 @@
 import { bdFirestore } from "./init";
-import { getDocs, collection, addDoc, Timestamp, getDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { collection, getDoc, getDocs, addDoc, Timestamp, doc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
 
 /**
  * Obtenir tous les dossiers d'un utilisateur
@@ -8,7 +8,7 @@ import { getDocs, collection, addDoc, Timestamp, getDoc, deleteDoc, doc, query, 
  */
 export async function lireTout(idUtilisateur) {
     return getDocs(query(collection(bdFirestore, 'signets', idUtilisateur, 'dossiers'),
-    orderBy('dateModif', 'desc'))).then(
+        orderBy('dateModif', 'desc'))).then(
         res => res.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     );
 }
@@ -40,7 +40,11 @@ export async function creer(idUtilisateur, dossier) {
  * @param {string} idDossier : id un document à supprimer
  * @returns {Promise<void>} : promesse contenant rien
  */
- export async function supprimer(uid, idDossier) {
+export async function supprimer(uid, idDossier) {
     let refDoc = doc(bdFirestore, 'signets', uid, 'dossiers', idDossier);
     return await deleteDoc(refDoc);
+}
+export async function modifier(uid, idDossier, objectModif) {
+    let refDoc = doc(bdFirestore, 'signets', uid, 'dossiers', idDossier);
+    return await updateDoc(refDoc, objectModif);
 }
