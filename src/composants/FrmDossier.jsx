@@ -7,39 +7,35 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { TwitterPicker } from 'react-color';
 import { useState } from 'react';
 
-export default function AjoutDossier({ ouvert, setOuvert, gererAjoutDossier }) {
-    const [titre, setTitre] = useState('');
-    const [couverture, setCouverture] = useState('');
-    const [couleur, setCouleur] = useState('#000');
+export default function FrmDossier({ id=null, titre_p='', couleur_p='#000', couverture_p='', ouvert, setOuvert, gererActionDossier, action }) {
+    const [titre, setTitre] = useState(titre_p);
+    const [couverture, setCouverture] = useState(couverture_p);
+    const [couleur, setCouleur] = useState(couleur_p);
 
-    const gererOuvrir = () => {
-        setOuvert(true);
-    };
-
-    const gererFermer = () => {
-        // Constater le bogue avant de réinitialiser les états des valeurs de formulaire
-        setTitre('');
-        setCouverture('');
-        setCouleur('#000')
+    function viderEtFermerFrm() {
+        setTitre(titre_p);
+        setCouverture(couverture_p);
+        setCouleur(couleur_p);
         setOuvert(false);
     };
 
     function gererSoumettre() {
         // Code qui gère l'ajout dans Firestore
-        if (titre.search(/\w{2,}/i) != -1) {
-            gererAjoutDossier(titre, couverture, couleur);
-            gererFermer();
+        if(titre.search(/[a-z]{2,}/i) != -1) {
+            gererActionDossier(id, titre, couverture, couleur);
+            if (id==null) {
+                viderEtFermerFrm(); 
+            }
         }
     }
 
     return (
         <div>
-            <Dialog open={ouvert} onClose={gererFermer}>
-                <DialogTitle>Ajouter un dossier</DialogTitle>
+            <Dialog open={ouvert} onClose={viderEtFermerFrm}>
+                <DialogTitle>Modifier ce dossier</DialogTitle>
                 <DialogContent>
                     {/* Titre du dossier */}
                     <TextField
-                    autoComplete="off"
                         autoFocus
                         margin="dense"
                         id="titre"
@@ -48,6 +44,7 @@ export default function AjoutDossier({ ouvert, setOuvert, gererAjoutDossier }) {
                         fullWidth
                         variant="standard"
                         onChange={e => setTitre(e.target.value)}
+                        defaultValue={titre}
                     />
                     {/* URL de l'image */}
                     <TextField
@@ -59,19 +56,20 @@ export default function AjoutDossier({ ouvert, setOuvert, gererAjoutDossier }) {
                         variant="standard"
                         style={{ marginBottom: "1.5rem" }}
                         onChange={e => setCouverture(e.target.value)}
+                        defaultValue={couverture}
                     />
                     {/* Choix de couleur */}
                     <TwitterPicker
                         triangle='hide'
-                        color={couleur}
+                        color={couleur_p}
                         colors={["#FF1493", "#00BFFF", "#288B22", "#DC143C"]}
                         width="auto"
                         onChangeComplete={(couleur, e) => setCouleur(couleur.hex)}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={gererFermer}>Annuler</Button>
-                    <Button onClick={gererSoumettre}>Soumettre</Button>
+                    <Button onClick={viderEtFermerFrm}>Annuler</Button>
+                    <Button onClick={gererSoumettre}>{action}</Button>
                 </DialogActions>
             </Dialog>
         </div>

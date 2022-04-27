@@ -7,9 +7,9 @@ import MenuItem from '@mui/material/MenuItem';
 import couvertureDefaut from '../images/couverture-defaut.webp';
 import { convertirDate } from '../code/helper';
 import { useState } from 'react';
-import ModificationDossier from './ModificationDossier';
+import FrmDossier from './FrmDossier';
 
-export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier, modifierDossier}) {
+export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier, modifierDossier, ajouterSignet}) {
   // État du menu contextuel
   const [eltAncrage, setEltAncrage] = useState(null);
   const ouvertMenu = Boolean(eltAncrage);
@@ -26,7 +26,7 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
     setEltAncrage(null);
   };
 
-  function gererFormulaireModifier() {
+  function afficherFormulaireModifier() {
     // Ouvrir le formulaire de modification du dossier (transférer l'info sir le
     // dossier dans le formulaire) ...
     setOuvertFrm(true);
@@ -50,10 +50,33 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
   catch(e) {
     couverture = couvertureDefaut;
   }
+  // État dropzone
+  const [dropzone, setDropzone] = useState(false)
+
+  function gererDragOver(evt) {
+    evt.preventDefault();
+  }
+
+  function gererDrop(evt) {
+    evt.preventDefault();
+    setDropzone(false);
+    let url = evt.dataTransfer.getData("URL");
+    ajouterSignet(id, url);
+  }
+
+  function gererDragEnter(evt) {
+    evt.preventDefault();
+    setDropzone(true);
+  }
+
+  function gererDragLeave(evt) {
+    evt.preventDefault();
+    setDropzone(false);
+  }
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir : 
     // https://reactjs.org/docs/dom-elements.html#style
-    <article className="Dossier" style={{backgroundColor: couleur}}>
+    <article className={'Dossier ' +(dropzone ? 'dropzone' : '')} onDrop={gererDrop} onDragOver={gererDragOver} onDragEnter={gererDragEnter} onDragLeave={gererDragLeave} style={{backgroundColor: couleur}}>
       <div className="couverture">
         <IconButton className="deplacer" aria-label="déplacer" disableRipple={true}>
           <SortIcon />
@@ -81,10 +104,10 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={gererFormulaireModifier}>Modifier</MenuItem>
+        <MenuItem onClick={afficherFormulaireModifier}>Modifier</MenuItem>
         <MenuItem onClick={gererSupprimer}>Supprimer</MenuItem>
       </Menu>
-      <ModificationDossier modifierDossier={modifierDossier} ouvert={ouvertFrm} setOuvert={setOuvertFrm} id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} />
+      <FrmDossier gererActionDossier={modifierDossier} ouvert={ouvertFrm} setOuvert={setOuvertFrm} id={id} titre_p={titre} couleur_p={couleur} couverture_p={couverture} action={'Modifier'}/>
     </article>
   );
 }
