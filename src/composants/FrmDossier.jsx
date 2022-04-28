@@ -23,9 +23,9 @@ export default function FrmDossier({ id=null, titre_p='', couleur_p='#000', couv
         // Code qui gère l'ajout dans Firestore
         if(titre.search(/[a-z]{2,}/i) != -1) {
             gererActionDossier(id, titre, couverture, couleur);
-            if (id==null) {
+            // if (id==null) {
                 viderEtFermerFrm(); 
-            }
+            // }
         }
     }
 

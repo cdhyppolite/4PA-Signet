@@ -6,10 +6,18 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import couvertureDefaut from '../images/couverture-defaut.webp';
 import { convertirDate } from '../code/helper';
-import { useState } from 'react';
+import { useState, useContext  } from 'react';
 import FrmDossier from './FrmDossier';
+import * as signetModele from '../code/signet-modele';
+import {UtilisateurContext} from './Appli';
 
-export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier, modifierDossier, ajouterSignet}) {
+export default function Dossier({id, titre, couleur, dateModif, couverture, supprimerDossier, modifierDossier, ajouterSignet, top3}) {
+  // Identifiant de l'utilisateur 
+  const utilisateur = useContext(UtilisateurContext)
+  const uid = utilisateur.uid;
+
+  // État des signets du dossier
+  const [signets, setSignets] = useState(top3 || []);
   // État du menu contextuel
   const [eltAncrage, setEltAncrage] = useState(null);
   const ouvertMenu = Boolean(eltAncrage);
@@ -61,6 +69,7 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
     evt.preventDefault();
     setDropzone(false);
     let url = evt.dataTransfer.getData("URL");
+    if (url=='') {url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSESQdWf_4jX4ECxu40tOY5gMGll0IdxV69lIreQKwuUI-5Z8_77UJw6fiToSM2XWLHimM&usqp=CAU'}
     ajouterSignet(id, url);
   }
 
@@ -73,6 +82,21 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
     evt.preventDefault();
     setDropzone(false);
   }
+
+  function gererDropImg(evt) {
+    let url = evt.dataTransfer.getData("URL");
+    modifierDossier(id, titre, url, couleur);
+  }
+
+  function ajouterSignet(idDossier, url) {
+    if (url=='') {url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSESQdWf_4jX4ECxu40tOY5gMGll0IdxV69lIreQKwuUI-5Z8_77UJw6fiToSM2XWLHimM&usqp=CAU'}
+    const derniers3 = [...signets, {url: url, titre: 'z'}].slice(-3);
+    console.log(idDossier + ' ' + url);
+    signetModele.creer(uid, idDossier, derniers3).then(
+      () => setSignets(derniers3)
+    );
+  }
+
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir : 
     // https://reactjs.org/docs/dom-elements.html#style
@@ -81,7 +105,7 @@ export default function Dossier({id, titre, couleur, dateModif, couverture, supp
         <IconButton className="deplacer" aria-label="déplacer" disableRipple={true}>
           <SortIcon />
         </IconButton>
-        <img src={couverture || couvertureDefaut} alt={titre}/>
+        <img className={(dropzone ? 'dropzone' : '')} /*onDrop={gererDropImg}*/ src={couverture || couvertureDefaut} alt={titre}/>
       </div>
       <div className="info">
         <h2>{titre}</h2>
