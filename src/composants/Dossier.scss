@@ -12,50 +12,100 @@
     &.dropzone {
         box-shadow: 0 0 10px 2px rgba(128, 0, 122, 0.75);
     }
-    .couverture {
-        height: 200px;
-        img {
-            // pointer-events: none;
-            width: 300px;
-            height: 200px;
-            object-fit: cover;
-            transition: 1s ease;
-            &.dropzone/*&:hover*/
-            {
-                opacity: 0.7;
-                transform: scale(1.2);
+    &.actif .carte {
+        transform: rotateY(180deg);
+    }
+    .carte {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        .endroit,
+        .envers {
+            // position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+        }
+        .endroit {
+            .deplacer {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                cursor: grab;
+                background-color: rgba($color: #000000, $alpha: 0.4);
+                color: #ccc;
+                &:hover {
+                    background-color: rgba($color: #000000, $alpha: 0.5);
+                }
+            }
+            .modifier {
+                position: absolute;
+                bottom: 25px;
+                right: 10px;
+                background-color: rgba($color: #333, $alpha: 0.4);
+                color: #ccc;
+                &:hover {
+                    background-color: rgba($color: #333, $alpha: 0.5);
+                }
+            }
+            .couverture {
+                height: 200px;
+                img {
+                    // pointer-events: none;
+                    width: 300px;
+                    height: 200px;
+                    object-fit: cover;
+                    transition: 1s ease;
+                    &.dropzone/*&:hover*/
+                    {
+                        opacity: 0.7;
+                        transform: scale(1.2);
+                    }
+                }
+            }
+            .info {
+                // pointer-events: none;
+                height: 150px;
+                padding: 1rem 0.75rem;
+                h2 {
+                    margin: 0;
+                    padding: 0;
+                    font-weight: normal;
+                    font-family: Roboto Slab;
+                }
             }
         }
-    }
-    .deplacer {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        cursor: grab;
-        background-color: rgba($color: #000000, $alpha: 0.4);
-        color: #ccc;
-        &:hover {
-            background-color: rgba($color: #000000, $alpha: 0.5);
+        .envers {
+            transform: rotateY(180deg);
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            a {
+                padding: 0.5rem;
+                margin: 0.5rem;
+                border-top: 1px dotted #eee;
+                border-bottom: 1px dotted #eee;
+            }
         }
-    }
-    .info {
-        // pointer-events: none;
-        padding: 1rem 0.75rem;
-        h2 {
-            margin: 0;
-            padding: 0;
-            font-weight: normal;
-            font-family: Roboto Slab;
-        }
-    }
-    .modifier {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        background-color: rgba($color: #333, $alpha: 0.4);
-        color: #ccc;
-        &:hover {
-            background-color: rgba($color: #333, $alpha: 0.5);
+        .touner-carte {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #000;
+            color: #fff;
+            width: 2.5rem;
+            height: 2.5rem;
+            border: none;
+            border-radius: 50%;
+            transition: .4s;
+            &:hover {
+                cursor: pointer;
+                color: #000;
+                background-color: #fff;
+            }
         }
     }
 }
